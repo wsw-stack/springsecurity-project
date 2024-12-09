@@ -15,15 +15,14 @@ public class SecurityConfig {
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((requests) ->
                 requests
-                        .requestMatchers("/contact").permitAll() // accept all /contact requests without authorization
-                        .anyRequest().
-                        authenticated()); // all requests will be handled
+                        .anyRequest()
+                        .authenticated()); // all requests will be handled
         // disable form based login
 //        http.formLogin(Customizer.withDefaults());
         // make authentication stateless
-        http.sessionManagement(session ->
-                session.sessionCreationPolicy((SessionCreationPolicy.STATELESS)));
+
         http.httpBasic(Customizer.withDefaults());
-        return (SecurityFilterChain)http.build();
+        http.csrf(csrf -> csrf.disable());
+        return http.build();
     }
 }
